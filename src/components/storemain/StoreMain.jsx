@@ -11,6 +11,7 @@ export default function StoreMain() {
             </section>
             <section id="cosmetics-sec">
                 <CosmeticsMain />
+                <CosmeticsMain />
             </section>
         </div>
     );
