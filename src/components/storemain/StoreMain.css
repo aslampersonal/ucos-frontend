@@ -1,0 +1,24 @@
+#storemain-div {
+    display: flex;
+    flex-direction: column;
+    padding: 3rem 0;
+    background-color: rgb(37, 53, 76);
+}
+
+#skincare-sec {
+    width: 100%;
+    height: 35rem;
+}
+
+#cosmetics-sec {
+    width: 100%;
+    height: 35rem;
+    margin-top: 2rem;
+    background-color: rgb(37, 53, 76);
+}
+
+.sec-h2 {
+    color: white;
+    text-decoration: underline;
+    text-underline-position: 1rem;
+}

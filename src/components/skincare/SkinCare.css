@@ -1,0 +1,30 @@
+#skincare-div {
+    width: 100%;
+}
+
+.cards-div {
+    width: 100%;
+}
+
+.sec-h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+}
+
+.row {
+    padding: 0 10rem;
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+.card-img-top {
+    width: 20rem;
+    height: 20rem;
+
+}
+
+.card-title {
+    text-align: center;
+}

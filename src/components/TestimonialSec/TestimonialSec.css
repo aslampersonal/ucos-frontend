@@ -1,0 +1,125 @@
+/* testimonial section */
+#testimonial-sec {
+    width: 100%;
+    height: 40rem;
+    background-color: rgb(37, 53, 76);
+    padding: 3rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+
+}
+
+#test-left-div {
+    height: 100%;
+    width: 32rem;
+    background-color: rgb(29, 42, 59);
+    margin-right: 2rem;
+    color: white;
+    font-family: 'Josefin Sans';
+    display: flex;
+    justify-content: center;
+}
+
+#test-h2-div {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5rem;
+}
+
+#test-h2-div h2 {
+    font-size: 40px;
+    font-weight: lighter;
+    line-height: 50px;
+}
+
+#test-h2-div hr {
+    width: 2rem;
+    background: white;
+    height: 3px;
+    margin: 10px 0;
+    border-radius: 10px;
+}
+
+#test-right-div {
+    height: 100%;
+    width: 45rem;
+    background-color: white;
+    font-family: 'Josefin Sans';
+    display: flex;
+    justify-content: center;
+}
+
+#test-right-div-container {
+    background-color: #fbfbfb;
+    width: 70%;
+    padding: 2rem 10px;
+}
+
+#test-form-name {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+#test-form-name input {
+    height: 3rem;
+}
+
+#test-form-name-name, #test-form-name-email {
+    width: 15rem;
+}
+
+#test-user-name {
+    background-color: #e5e5e5;
+}
+
+#test-user-email {
+    background-color: #bae8af;
+}
+
+#test-form-p {
+    text-align: center;
+    font-size: smaller;
+    padding: 0 4rem;
+}
+
+#test-form-rating-rating {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 0 3rem;
+    margin-bottom: 1rem;
+}
+
+#test-form-test textarea {
+    background-color: #bae8af;
+    resize: none;
+    height: 6rem;   
+}
+
+#test-form-agreement {
+    margin: 1rem 0;
+}
+
+#test-form-agreement input {
+    margin-right: 1rem;
+}
+
+.review-img:hover {
+    background-color: rgb(37, 53, 76);
+    
+}
+
+#test-form-submit {
+    display: flex;
+    justify-content: center;
+}
+
+#test-form-submit button {
+    text-transform: uppercase;
+    padding: 5px 1rem;
+}

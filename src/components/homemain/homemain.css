@@ -1,0 +1,377 @@
+main {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+
+/* home page banner section */
+#mbanner-section {
+    height: 23rem;
+    width: 100%;
+}
+
+.mbanner-div {
+    width: 100%;
+    height: 23rem;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.mbanner-div1 {
+    width: 500%;
+    height: 23rem;
+    display: flex;
+}
+
+.mbanner-div1 input {
+    display: none;
+}
+
+.mySlides {
+    width: 20%;
+    transition: 2s;
+}
+
+.b-img {
+    width: 100%;
+    height: 23rem;
+}
+
+/* css for manual slide navigation */
+.navigation-manual, .navigation-auto {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 340px;
+}
+
+.manual-btn {
+    border: 2px solid #6d9962;
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 1s;
+}
+
+.manual-btn:not(:last-child) {
+    margin-right: 40px;
+}
+
+.manual-btn:hover {
+    background: #6d9962;  
+}
+
+#bnr-changer1:checked ~ .first {
+    margin-left: 0;
+}
+
+#bnr-changer2:checked ~ .first {
+    margin-left: -20%;
+}
+
+#bnr-changer3:checked ~ .first {
+    margin-left: -40%;
+}
+
+#bnr-changer4:checked ~ .first {
+    margin-left: -60%;
+}
+
+/* css for automatic navigation */
+
+.navigation-auto div {
+    border: 2px solid #6d9962;
+    padding: 5px;
+    border-radius: 10px;
+    transition: 1s;
+}
+
+.navigation-auto div:not(:last-child) {
+    margin-right: 40px;
+}
+
+#bnr-changer1:checked ~ .navigation-auto .auto-btn1 {
+    background: #6d9962;
+}
+
+#bnr-changer2:checked ~ .navigation-auto .auto-btn2 {
+    background: #6d9962;
+}
+
+#bnr-changer3:checked ~ .navigation-auto .auto-btn3  {
+    background: #6d9962;
+}
+
+#bnr-changer4:checked ~ .navigation-auto .auto-btn4  {
+    background: #6d9962;
+}
+
+/* section 2 - text section */
+#section2 {
+    height: 20rem;
+    width: 100%;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+}
+
+#s2-main-div {
+    background-color: rgb(37, 53, 76);
+    height: 75%;
+    width: 85%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 20px;
+}
+
+#s2-h2 {
+    width: 60%;
+    text-align: center;
+    color: #e7e3e3;
+    letter-spacing: 0.1rem;
+    font-family: 'Josefin Sans';
+    text-transform: uppercase;
+    font-size: 25px;
+    font-weight: 300;
+    line-height: 40px;
+}  
+
+/* product category section */
+#category-section {
+    height: 40rem;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#cat-makeup-div{
+    background-image: url("/src/assets/images/makeup-banner.jpg");
+    width: 50%;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#cat-makeup-div-div {
+    background-color: rgb(37, 53, 76);
+    height: 25rem;
+    width: 30rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    flex-direction: column;
+    font-family: 'Josefin Sans';
+}
+
+#cat-skin-div {
+    background-image: url("/src/assets/images/skincare-banner.jpg");
+    width: 50%;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#cat-skin-div-div{
+    background-color: #6d9962;
+    height: 25rem;
+    width: 30rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    flex-direction: column;
+    font-family: 'Josefin Sans';
+}
+
+#cat-makeup-h2 {
+    width: 15rem;
+    text-align: center;
+    color: white;
+}
+
+#cat-skin-h2 {
+    width: 15rem;
+    text-align: center;
+    color: rgb(0, 0, 0);
+}
+
+#cat-makeup-btn {
+    width: 10rem;
+    border-radius: 0;
+    margin-top: 3rem;
+    box-shadow: 5px 5px 10px;
+}
+
+#cat-skin-btn {
+    width: 10rem;
+    border-radius: 0;
+    margin-top: 3rem;
+    box-shadow: 5px 5px 10px black;
+}
+
+/* scroll banner section */
+#scroll-banner-section {
+    height: 24rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+#scroll-banner-div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+
+#sb-h-div {
+    width: 100%;
+    height: 3rem;
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+}
+
+#sb-b-div {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.sb-img-div {
+    height: 17rem;
+    width: 18.5rem;
+}
+
+.sb-img {
+    height: 100%;
+    width: 100%;
+    display: block;
+    transition: .5s ease;
+    opacity: 1;
+}
+
+.sb-img:hover {
+    opacity: 0.3;
+}
+
+/* banner3 section */
+#banner3-section {
+    margin-top: 1rem;
+}
+
+#banner3-div {
+    width: 100%;
+    height: 35rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: rgb(37, 53, 76);
+}
+
+#b3-leftb {
+    height: 100%;
+    width: 33rem;
+}
+
+#b3-center {
+    height: 100%;
+    width: 22rem;
+    background-color: rgb(37, 53, 76);
+    color: whitesmoke;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Josefin Sans';
+}
+
+#b3-center-h2 {
+    text-align: center;
+    margin-bottom: 4rem;
+    letter-spacing: 2px;
+}
+
+#b3-center-btn {
+    width: 15rem;
+    border-radius: 0;
+    box-shadow: 5px 5px 10px;
+}   
+
+#b3-rightb {
+    height: 100%;
+    width: 33rem;
+}
+
+#b3-left-img {
+    height: 100%;
+    width: 100%;
+}
+
+#b3-right-img {
+    height: 100%;
+    width: 100%;
+}
+
+/* product banner section2 */
+#product-bnr2-sec {
+    width: 100%;
+    height: 20rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Josefin Sans';
+}
+
+#prod-bnr2-div {
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.prod-div {
+    width: 10rem;
+    height: 10rem;
+    margin: 1rem;
+    border-radius: 5px;
+    position: relative;
+}
+
+.prod-img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 15px;
+
+}
+
+.prod-img-text {
+    background-color: #6d9962;
+    width: fit-content;
+    padding: 0 10px;
+    position: relative;
+}
+
+#prod-bnr2-btn-div {
+    width: 15rem;
+    height: 2.5rem;
+}
+
+#prod-bnr2-btn {
+    width: 100%;
+    height: 100%;
+    border-radius: 25px;
+    letter-spacing: 2px;
+}
