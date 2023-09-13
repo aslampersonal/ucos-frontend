@@ -130,7 +130,7 @@ function TestimonialSec () {
                                 <div id="test-form-agreement">
                                     <input type="checkbox" />
                                     <span>
-                                        I agree to publicly publish my testimonial online on the CITRO
+                                        I agree to publicly publish my testimonial online on the UCOS
                                         website and/or social meda platforms.
                                     </span>
                                 </div>

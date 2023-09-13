@@ -7,7 +7,7 @@ export default function SkinCare() {
             <div id="skincare-div">
                 <h2></h2>
                 <div className="cards-div">
-                    <h2 className="sec-h2" id="skincare-h2">Skin care</h2>
+                    <h2 className="sec-h2" id="skincare-h2">Skin Care Products</h2>
                     <div class="row">
                         <div class="col-sm-5">
                             <div class="card">

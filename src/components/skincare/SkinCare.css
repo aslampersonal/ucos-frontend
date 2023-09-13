@@ -1,5 +1,8 @@
 #skincare-div {
     width: 100%;
+    background-color: rgb(37, 53, 76);
+    padding-top: 2rem;
+    padding-bottom: 4rem;
 }
 
 .cards-div {
@@ -27,4 +30,12 @@
 
 .card-title {
     text-align: center;
+}
+
+#skincare-h2 {
+    color: white;
+    font-size: 45px;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 2px black;
+    font-family: comic sans ms, cursive;
 }

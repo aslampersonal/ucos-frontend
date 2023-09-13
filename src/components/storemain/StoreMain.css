@@ -1,7 +1,7 @@
 #storemain-div {
     display: flex;
     flex-direction: column;
-    padding: 3rem 0;
+    padding: 1rem 0;
     background-color: rgb(37, 53, 76);
 }
 
@@ -19,6 +19,8 @@
 
 .sec-h2 {
     color: white;
-    text-decoration: underline;
-    text-underline-position: 1rem;
+    font-size: 35px;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 2px black;
+    font-family: comic sans ms, cursive;
 }

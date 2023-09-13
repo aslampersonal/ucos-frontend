@@ -8,7 +8,7 @@ export default function CosmeticsMain() {
             <div id="cosmetics-div">
                 <h2></h2>
                 <div className="cards-div">
-                    <h2 className="sec-h2" id="cosmetics-h2">Cosmetics</h2>
+                    <h2 className="sec-h2" id="cosmetics-h2">Cosmetic Products</h2>
                     <div class="row">
                         <div class="col-sm-5">
                             <div class="card">

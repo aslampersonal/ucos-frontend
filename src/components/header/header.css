@@ -25,7 +25,6 @@ header {
     z-index: 1;
     top: 0;
     width: 100%;
-    color: #f1f1f1;
     font-family: 'Josefin Sans';
 }
 
@@ -107,6 +106,57 @@ header {
     color: black;
 }
 
+.drop-li {
+    float: left;
+    overflow: hidden;
+    color: black;
+}
+
+.drop-link {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit; /* Important for vertical align on mobile phones */
+    margin: 0; /* Important for vertical align on mobile phones */
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+    border: 0;
+    background: 0;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #e5e5e5;
+    min-width: 8rem;
+    /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
+    z-index: 1;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.dropdown-item {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    background: 0;
+}
+
+.dropdown-item:hover {
+    background-color: red;
+    
+}
+
+.drop-li:hover .dropdown-content {
+    display: block;
+}
+
 .h-nav-a {
     text-decoration: none;
     color: black;
@@ -115,7 +165,7 @@ header {
     background: 0;
 }
 
-.h-nav-a:hover {
+.h-nav-a:hover .drop-li:hover .drop-link {
     color: rgb(5, 5, 205);
     cursor: pointer;
 }
@@ -123,41 +173,23 @@ header {
 #h-nav-div-profile {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
     width: 10rem;
 }
 
-#login-button {
-    display: flex;
-    flex-direction: row;
-    justify-self: center;
-    align-items: center;    
-}
-
-#login-icon-div {
-    height: 50px;
-    width: 50px;
+#login-icon {
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-#cart-div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    width: 50px;
+#cart-icon {
+    padding: 0;
     margin-left: 1rem;
+
 }
 
-#cart-icon-div {
-    height: 35px;
-    width: 35px;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
+.top-icons {
+    font-size: 25px;
 }
 
 
