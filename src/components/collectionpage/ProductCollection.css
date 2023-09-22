@@ -1,0 +1,21 @@
+#first-sec {
+    background-color: rgb(235, 235, 235);
+    margin-bottom: 2rem;
+}
+
+#head-sec-div { 
+    margin-top: 1rem;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.title-page {
+    text-transform: uppercase;
+}
+
+.row {
+    padding: 0;
+}

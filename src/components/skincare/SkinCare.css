@@ -5,6 +5,10 @@
     padding-bottom: 4rem;
 }
 
+.nav-link {
+    text-decoration: none;
+}
+
 .cards-div {
     width: 100%;
 }

@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
+import { MdKeyboardArrowLeft } from "react-icons/md"
+
 import "./ProductMain.css";
 
 function ProductMain (props) {
@@ -12,13 +14,12 @@ function ProductMain (props) {
     });
 
     async function getData() {
-        var data = await axios.get('http://localhost:3000/products')
+        var data = await axios.get('http://localhost:3000/get-product')
         return data.data;
     }
 
     async function showData() {
         const Data = await getData();
-
         let mainimage = document.getElementById("prod-img"); 
         let imgscrolldiv = document.getElementById("prod-scroll-carousel");
         let title = document.getElementById("pd-title");
@@ -26,20 +27,20 @@ function ProductMain (props) {
         let price = document.getElementById("pd-price");
 
         for(let i=0; i<Data.length; i++) {
-            for(let j=0; j<Data[i].Images.length; j++) {
-                const pdimg = document.createElement("img");
-                const imgurl = "../images/product-images/" + Data[i].Images[j];
-                pdimg.setAttribute("class","prod-scroll-img");
-                pdimg.setAttribute("src",imgurl);
-                imgscrolldiv.appendChild(pdimg);
-            }
+            // for(let j=0; j<Data[i].Images.length; j++) {
+            //     const pdimg = document.createElement("img");
+            //     const imgurl = "../images/product-images/" + Data[i].Images[j];
+            //     pdimg.setAttribute("class","prod-scroll-img");
+            //     pdimg.setAttribute("src",imgurl);
+            //     imgscrolldiv.appendChild(pdimg);
+            // }
 
-            const mainImgurl = "../images/product-images/" + Data[0].Images[0];
-            mainimage.setAttribute("src",mainImgurl);
+            // const mainImgurl = "../images/product-images/" + Data[0].Images[0];
+            // mainimage.setAttribute("src",mainImgurl);
 
-            title.innerText = Data[i].productTitle;
+            title.innerText = Data[i].name;
             description.innerText = Data[i].description;
-            price.innerText = Data[i].Price;
+            price.innerText = Data[i].price;
 
         }
     }
@@ -109,24 +110,11 @@ function ProductMain (props) {
                 <div className="container" id="prod-sec-div">
                     <div id="prod-img-div">
                     <div id="prod-img-main">
-                        <img id="prod-img" src="../../assets/images/eyeshadow-girl1.jpg" alt="" />
+                        <img id="prod-img" src="/src/assets/images/eyeshadow-girl1.jpg" alt="" />
                     </div>
                     <div id="prod-scroll-div">
                         <div id="scroll-back" className="scroll-icon">
-                        <svg
-                            width={10}
-                            height={16}
-                            viewBox="0 0 10 16"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M9.19191 0.859345C8.66382 0.346285 7.80132 0.340271 7.26548 0.845912L0.75891 6.98574C0.499141 7.23087 0.352883 7.5655 0.352883 7.91472C0.352883 8.26393 0.499141 8.59857 0.75891 8.84369L7.44622 15.1541C7.98206 15.6597 8.84455 15.6537 9.37265 15.1406C9.90075 14.6276 9.89446 13.8018 9.35862 13.2961L3.65578 7.91472L9.17788 2.70387C9.71373 2.19822 9.72001 1.3724 9.19191 0.859345Z"
-                            fill="black"
-                            />
-                        </svg>
+                            <MdKeyboardArrowLeft />
                         </div>
                         <div id="prod-scroll-carousel">
                         <img

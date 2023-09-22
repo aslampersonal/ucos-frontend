@@ -15,7 +15,7 @@ main {
     margin-top: 7rem;
 }
 
-header {
+#header {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
