@@ -1,137 +1,162 @@
-import React, { useEffect } from "react";
-import { FaUserAlt, FaLock, FaKey } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Cookies from 'js-cookie';
+
+import { FaFacebook, FaLinkedin, FaGoogle } from "react-icons/fa";
 import { TbReload } from "react-icons/tb";
-import { loadCaptchaEnginge, LoadCanvasTemplate, LoadCanvasTemplateNoReload, validateCaptcha } from 'react-simple-captcha';
-import { useForm } from "react-hook-form";
 
-import "./Signup.css"
+export default function SignUpForm () {
+    
+  useEffect (() => {
+        const jwtToken = Cookies.get('jwt');
+        if (jwtToken) {
+            navigate("/");
+          }
 
-export default function Signup (props) {
+    }, []);
 
-    useEffect (() => {
-        loadCaptchaEnginge(5, "grey");
+    const navigate = useNavigate();
+
+    const [formdata, setFormData] = useState({
+        username: "",
+        fullname: "",
+        mobile: "",
+        email: "",
+        password: "",
+        confirmpassword: ""
+    })
+
+    const [errors, setErrors] = useState({})
+    const [passwordStrength, setPasswordStrength] = useState({
+      Minlength: false,
+      "[A-Z]": false,
+      "[a-z]": false,
+      Specialchar: false,
+      "[0-9]": false
     });
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm(); 
-    const onSubmit = data => console.log(data);
+    function handleChange(e) {
+        const {name, value} = e.target;
+        setFormData({...formdata, [name] : value})
 
-    // console.log(watch("example"));
-
-    function validateCaptchaValue () {
-        let user_captcha_value = document.getElementById('captcha-text').value;
-        let captchaLabel = document.getElementById('captcha-status');
-
-        if (validateCaptcha(user_captcha_value, false)===true) {            
-            captchaLabel.innerText = ""
-            return true;
-        } else {
-            captchaLabel.innerText = "invalid captcha!!!"
-            return false;
+        // Check password strength
+        if(name === "password") {
+          const password = value;
+          setPasswordStrength({
+              Minlength: password.length >= 8,
+              "[A-Z]": /[A-Z]/.test(password),
+              "[a-z]": /[a-z]/.test(password),
+              Specialchar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+              "[0-9]": /\d/.test(password)
+          });
         }
     }
 
-    function formSubmit () {
-        const captchaValid = validateCaptchaValue();
+    async function handleSubmit(e) {
+        e.preventDefault();
+        const validationErrors = {}
+
+        // if(!document.getElementById("terms-conditions").checked) {
+        //     validationErrors.terms = "You should agree the terms and conditions"
+        // }
+
+        // Check password strength
+        const isPasswordStrong = Object.values(passwordStrength).every(value => value);
+        if (!isPasswordStrong) {
+            validationErrors.passwordStrength = "Password should meet the criteria.";
+        }
+
+        setErrors(validationErrors);
+
+        if(Object.keys(validationErrors).length === 0) {
+            const formData = new FormData();
+            formData.append('username', document.getElementById("username").value);
+            formData.append('email', document.getElementById("email").value);
+            formData.append('password', document.getElementById("password").value);
+            formData.append('confirmpassword', document.getElementById("confirmpassword").value);
+
+            try {
+                const response = await axios.post('http://localhost:3000/api/users/register', formData, {
+                    headers: {
+                      'Content-Type': 'application/json', // or 'application/json' if needed
+                    },
+                });
+                console.log(response.data.message);
+                
+                window.location.reload();
+
+              } catch (error) {
+                console.error('Error registering the user', error);
+              }
+        }
+
     }
 
-    return (
-        <>
-            <section className="signup-section">
-                <div className="container h-100">
-                    <div className="row d-flex justify-content-center align-items-center h-100">
-                        <div className="card text-black" style={{ border: 0 }}>
-                                <div className="main-div">
-                                    <div className="form-div">
-                                        <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4" style={{color: "rgb(37, 53, 76)"}}>
-                                            SIGN UP
-                                        </p>
-                                        <form id="signup-form" onSubmit={handleSubmit(onSubmit)} noValidate>
-                                            <div className="icons-div">
-                                                <FaUserAlt className="icons" />
-                                                <input
-                                                    {...register("profilename", { pattern: /^[A-Za-z]+$/i }, { required:{ value: true, message: 'required' } })}
-                                                    type="text"
-                                                    id="profilename"
-                                                    className="form-control"
-                                                    placeholder="Your Name"
-                                                    required
-                                                />
-                                            </div>
-                                            <div className="icons-div">
-                                                <MdEmail className="icons" />
-                                                <input
-                                                    {...register("email", { required: { value: true, message: 'required' } })}
-                                                    type="email"
-                                                    id="email"
-                                                    className="form-control"
-                                                    placeholder="Your Email"
-                                                    required
-                                                />
-                                            </div>
-                                            <div className="icons-div">
-                                                <FaLock className="icons" />
-                                                <input
-                                                    {...register("password", { required: { value: true, message: 'required' } })}
-                                                    type="password"
-                                                    id="password"
-                                                    className="form-control"
-                                                    placeholder="Password"
-                                                    required
-                                                />
-                                            </div>
-                                            <div className="icons-div">
-                                                <FaKey className="icons" />
-                                                <input
-                                                    {...register("passwordRepeat", { required: { value: true, message: 'required' } })}
-                                                    type="password"
-                                                    id="password-repeat"
-                                                    className="form-control"
-                                                    placeholder="Repear Your Password"
-                                                />
-                                            </div>
-                                            <div id="terms-checkbox">
-                                                <input
-                                                    {...register("termsCond", { required: { value: true, message: 'accept terms & conditions' } })}
-                                                    type="checkbox"
-                                                    defaultValue=""
-                                                    id="terms-conditions"
-                                                />
-                                                <label htmlFor="form2Example3">
-                                                I agree all {" "}
-                                                <a href="#!" id="terms-text">Terms of service</a>
-                                                </label>
-                                            </div>
-                                            <div id="captcha-div">
-                                                <a id="reload_href"><TbReload className="reload-icon"/><div></div></a>
-                                                <LoadCanvasTemplateNoReload />
-                                                <div id="captcha-input-div">
-                                                    <input type="text" id="captcha-text" onChange={() => {validateCaptchaValue()}} className="form-control" placeholder="Type the code!" />
-                                                    <div className="input-status-div">
-                                                        <label id="captcha-status"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4" id="register-div">
-                                                <button type="button" id="register-btn" className="btn btn-primary btn-lg" onClick={() => {formSubmit()}}>
-                                                Register
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                                        <img
-                                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                                        className="img-fluid"
-                                        alt="Sample image"
-                                        />
-                                    </div>
-                                </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+  return (
 
-        </>
-    );
+    <div className="form-container sign-up-container">
+      <form onSubmit={handleSubmit} className="ls-form">
+        <h1 className="ls-h1">Create Account</h1>
+        {/* <div className="social-container">
+          <a href="#" className="social">
+            <FaFacebook className="social-i" />
+          </a>
+          <a href="#" className="social">
+            <FaGoogle className="social-i" />
+          </a>
+          <a href="#" className="social">
+            <FaLinkedin className="social-i" />
+          </a>
+        </div>
+        <span className="ls-span">or use your email for registration</span> */}
+        <div className="social-container"></div>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          onChange={handleChange}
+          placeholder="User Name"
+          className="ls-input"
+        />
+        <input
+          type="email"
+          name="email"
+          id="email"
+          onChange={handleChange}
+          placeholder="Email"
+          className="ls-input"
+        />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          onChange={handleChange}
+          placeholder="Password"
+          className="ls-input"
+        />
+        <div className="password-check-div">
+          {Object.keys(passwordStrength).map((key) => (
+              <div key={key} className={`password-strength ${passwordStrength[key] ? 'strong' : 'weak'}`}>
+                  {key}
+              </div>
+          ))}
+        </div>
+        <input
+          type="password"
+          name="confirmpassword"
+          id="confirmpassword"
+          onChange={handleChange}
+          placeholder="Repeat Password"
+          className="ls-input"
+        />
+        {errors.passwordStrength && (
+            <div className="password-strength-error">{errors.passwordStrength}</div>
+        )}
+        <button type="submit" className="ls-btn">Sign Up</button>
+      </form>
+    </div>
+  );
 }
+
+

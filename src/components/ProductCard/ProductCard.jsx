@@ -1,71 +1,182 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import "./ProductCard.css"
-import { FaSearchPlus } from "react-icons/fa"
+import { IoIosArrowDropdown, IoIosPricetag } from "react-icons/io"
+import { BsFillCartPlusFill } from "react-icons/bs"
 
-import MyContext from '../../context/MyContext';
+import { useCont } from '../../context/MyContext';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import Toast from '../Toast/Toast';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 export default function ProductCard (props) {
 
-    const path = props.loc.state.title;
-    const product = useContext(MyContext);
-    const {prodData} = product;
-    const productList = prodData.filter((prod) => prod.category == path);
+    const path = props.loc;
+    const selectedBrands = props.selectedBrands || [];
+    const updateProductList = props.updateProductList;
+
+    const { cart, setCart, user, prodData, getCart } = useCont();
+    const navigate = useNavigate();
+
+    let productList = prodData;
+    if (path === "Search") {
+        const searchResults = props.searchResults;
+        productList = searchResults;
+    } else if (path === "lips") {
+        productList = prodData.filter((prod) => 
+        prod.category == "Lipstick" || 
+        prod.category === "Lip Balm" || 
+        prod.category === "Lip Scrub" || 
+        prod.category === "Lip Mask" 
+        );
+    } else if(path === "hands & feet") {
+        productList = prodData.filter((prod) => 
+        prod.category == "Hand Creams" || 
+        prod.category === "Foot Creams" || 
+        prod.category === "Hands & Foot Masks" 
+        );
+    } else if (path === "eyes") {
+        productList = prodData.filter((prod) => 
+        prod.category == "Under Eye Cream & Serum" || 
+        prod.category === "Eye Masks"
+        );
+    } else if (path === "skincare") {
+        productList = prodData.filter((prod) => 
+        prod.category == "Moisturizer" || 
+        prod.category === "Cleanser" || 
+        prod.category === "Mask" || 
+        prod.category === "Toner" 
+        );
+    } else if (path === "bodycare") {
+        productList = prodData.filter((prod) => 
+        prod.category == "Lotions & Creams" || 
+        prod.category === "Massage Oils" || 
+        prod.category === "Shower Gels & Body Wash" || 
+        prod.category === "Scrubs & Loofahs" 
+        );
+    } else if (path === "haircare") {
+        productList = prodData.filter((prod) => 
+        prod.category == "Shampoo" || 
+        prod.category === "Conditioner" || 
+        prod.category === "Hair Oil" || 
+        prod.category === "Hair Serum" ||
+        prod.category === "Dry Shampoo" 
+        );
+    } else {
+        productList = prodData.filter((prod) => prod.category == path );
+    }
+
+    // Filter productList based on selected brands
+    productList = productList.filter((prod) => selectedBrands.length === 0 || selectedBrands.includes(prod.brand));
+
+    useEffect(() => {
+        // Update productList when the prop changes
+        productList = prodData;
+        productList = productList.filter((prod) => selectedBrands.length === 0 || selectedBrands.includes(prod.brand));
+
+
+    }, [selectedBrands, prodData]);
+    
+    useEffect(() => {
+
+        if(prodData) {
+            localStorage.setItem("productData", JSON.stringify(productList));
+        }
+
+    }, [selectedBrands, productList, prodData, updateProductList]);
+
+    const [sorted, sortProducts] = useState([]);
+    const [showToast, setShowToast] = useState(false);
+    const [selectedOption, setSelectedOption] = useState('Latest items');
+
+    function sortChange(event) {
+        const selectedValue = event.target.value;
+        setSelectedOption(selectedValue);
+
+        if (selectedValue === "Name") {
+            productList.sort((a, b) => a.title.localeCompare(b.title));
+        }
+
+        if (selectedValue === "Cheapest") {
+            productList.sort((a, b) => a.title.localeCompare(b.title) || a.price - b.price);
+        }
+        // sortProducts(productList);
+        console.log(productList);
+    }
+
+    async function addToCart(id) {
+        const jwtToken = Cookies.get("jwtToken");
+        if (jwtToken) {
+            try {
+                const response = await axios.post(`http://localhost:3000/api/users/products/cart/${id}`,
+                {id: id},
+                {
+                    headers: {
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${jwtToken}`,
+                    },
+                    withCredentials: true 
+                });
+                getCart();
+                console.log(response.data.message);
+                
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+            }            
+        } else {
+            const cart = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")) : [];
+            localStorage.setItem("cart", JSON.stringify([...cart, id]));
+        }
+        // window.location.reload();
+    }
 
     return(
         <section id="main-section" className="col-9">
-    
+            {/* notification toasts */}
+            <div className="toast-container position-fixed top-0 start-50 translate-middle-x" style={{zIndex: "10"}}>
+                <Toast show={showToast} type="error" message="Login to order your products" />
+            </div>
             <header className="border-bottom mb-4 pb-3">
-                <div className="form-inline">
-                    <span className="mr-md-auto">{productList.length} Items found </span>
-                    <select className="mr-2 form-control">
-                        <option>Latest items</option>
-                        <option>Trending</option>
-                        <option>Most Popular</option>
-                        <option>Cheapest</option>
-                    </select>
-                    <div className="btn-group">
-                        <a href="#" className="btn btn-outline-secondary" data-toggle="tooltip" title="List view"> 
-                            <i className="fa fa-bars"></i></a>
-                        <a href="#" className="btn  btn-outline-secondary active" data-toggle="tooltip" title="Grid view"> 
-                            <i className="fa fa-th"></i></a>
+                <div className="form-inline" id='sort-main-div'>
+                    <span className="mr-md-auto" style={{fontWeight: "600"}}>{productList.length} Items found </span>
+                    <div id='sort-div'>
+                        <span style={{marginRight: "1rem", fontWeight: "600"}}>Sort By:</span>
+                        <select className="form-control" id='sort-select' value={selectedOption} onChange={sortChange}>
+                            <option>Latest items</option>
+                            <option>Name</option>
+                            <option>Cheapest</option>
+                        </select>
                     </div>
                 </div>
             </header>
             
-            <div className='row-6' >
+            <div className='card-row'>
                 {productList.map((prodData) => {
-                        return (
-                            <div className="col-4" key={prodData._id}>
-                                <figure className="card card-product-grid">
+                    return (
+                        <div className='card-main-div' key={prodData._id}>
+                            <form>
+                            <figure className="prod-card">
+                                <NavLink to="/product" state={{prodId: prodData._id}} className="nav-link">
                                     <div className="img-wrap"> 
-                                        <span className="badge badge-danger"> NEW </span>
                                         <img src={prodData.image} />
-                                        <a className="btn-overlay" href="#"><FaSearchPlus /> Quick view</a>
-                                    </div> 
-                                    <figcaption className="info-wrap">
-                                        <div className="fix-height">
-                                            <a href="#" className="title">{prodData.name}</a>
-                                            <div className="price-wrap mt-2">
-                                                <span className="price">{prodData.price}</span>
-                                            </div>
+                                    </div>
+                                </NavLink> 
+                                <figcaption className="info-wrap">
+                                    <span className="pd-title">{prodData.title}</span>
+                                    <div className='price-div'>
+                                        <div className='price-tag-div'>
+                                            <span className="price">₹{prodData.price}</span>
                                         </div>
-                                        <a href="#" className="btn btn-block btn-primary">Add to cart</a>
-                                    </figcaption>
-                                </figure>
-                            </div>
-                        )
-                    })}
+                                        <button type='button' className="cart-btn" onClick={() => addToCart(prodData._id)}><BsFillCartPlusFill className='cart-icon'/></button>
+                                    </div>
+                                </figcaption>
+                            </figure>
+                            </form>
+                        </div>
+                    )
+                })}
             </div>
-
-            <nav className="mt-4" aria-label="Page navigation sample">
-                <ul className="pagination">
-                <li className="page-item disabled"><a className="page-link" href="#">Previous</a></li>
-                <li className="page-item active"><a className="page-link" href="#">1</a></li>
-                <li className="page-item"><a className="page-link" href="#">2</a></li>
-                <li className="page-item"><a className="page-link" href="#">3</a></li>
-                <li className="page-item"><a className="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
 
         </section> 
     );

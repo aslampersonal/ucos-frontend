@@ -1,0 +1,80 @@
+#total-div {
+  padding: 80px;
+  display: flex;
+  /* flex-direction: row; */
+}
+
+#total-div #text-div {
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 1rem;
+}
+
+#total-div .desktopImage {
+  width: 40%;
+}
+
+#text-div p {
+  font-size: 20px;
+  padding: 1rem 0px;
+}
+
+#total-div button {
+  width: 30%;
+  padding: 10px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  background: 0;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+#total-div button:hover {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 1.5);
+}
+
+#total-div img {
+  width: 100%;
+}
+
+#text-div .title {
+  font-weight: 900;
+  font-size: 34px;
+  margin-bottom: var(--mantine-spacing-md); /* Assuming this variable is defined elsewhere */
+  font-family: 'Greycliff CF', sans-serif; /* Assuming 'Greycliff CF' is a font available */
+}
+
+.desktopImage {
+  width: auto;
+}
+
+@media (max-width: 767px) {
+  .title {
+    font-size: 32px;
+  }
+
+  .control {
+    width: 100%;
+  }
+
+  .desktopImage {
+    display: none;
+  }
+}
+
+.mobileImage {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .mobileImage {
+    display: none;
+  }
+}
+
+.desktopImage {
+  display: block;
+}
+

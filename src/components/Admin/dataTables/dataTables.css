@@ -1,0 +1,109 @@
+.od-main-div h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.od-main-div button {
+    padding: 10px 1rem;
+    background: 0;
+    border: 0;
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.09);
+}
+
+.od-main-div button:hover {
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.32);
+}
+
+.edit-btn {
+    color: blue;
+}
+
+.edit-btn:hover {
+    background-color: blue;
+    color: white;
+}
+
+.delete-btn {
+    color: red;
+}
+
+.delete-btn:hover {
+    background-color: red;
+    color: white;
+}
+
+#tab-head {
+    background-color: rgba(0, 0, 0, 0.12);
+}
+
+.pop-input-div {
+    width: auto;
+    height: auto;
+    display: flex;
+    margin: 1rem;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.pop-input-div label {
+    margin-right: 1rem;
+}
+
+.pop-input-div input {
+    width: 70%;
+}
+
+.pop-order-div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.order-label {
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pop-order-div label {
+    margin-right: 1rem;
+}
+
+.pop-order-div select, .tableCell select {
+    padding: 5px 1rem;
+}
+
+#close-btn {
+    position: absolute;
+    top: 10px;
+    right: -10px;
+    font-size: 20px;
+}
+
+#pop-btn-div {
+    display: flex;
+    justify-content: center;
+}
+
+#update-btn {
+    font-size: 12px;
+    background: 0;
+    border: 0;
+    color: blue;
+    letter-spacing: 1px;
+    border-radius: 10px;
+    padding: 5px 1rem;
+    margin-left: 1rem;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.12);
+}
+
+#update-btn:hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.32);
+}
+
+.tableCell img {
+    width: 5rem;
+    height: 5rem;
+}
+

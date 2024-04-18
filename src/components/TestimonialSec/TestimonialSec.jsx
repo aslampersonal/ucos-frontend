@@ -34,7 +34,7 @@ function TestimonialSec () {
                                         />
                                     </div>
                                     <div id="test-form-name-email" className="form-group">
-                                        <label>Email</label>
+                                        <label>Email *</label>
                                         <input
                                         type="email"
                                         id="test-user-email"

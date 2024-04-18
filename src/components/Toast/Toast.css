@@ -1,0 +1,9 @@
+.toast-body { 
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
+
+.toast-icons {
+    font-size: 20px;
+}

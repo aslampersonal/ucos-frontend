@@ -46,16 +46,17 @@
 #test-right-div {
     height: 100%;
     width: 45rem;
-    background-color: white;
     font-family: 'Josefin Sans';
     display: flex;
     justify-content: center;
 }
 
 #test-right-div-container {
-    background-color: #fbfbfb;
-    width: 70%;
-    padding: 2rem 10px;
+    background-color: white;
+    border-radius: 10px;
+    width: 80%;
+    padding: 2rem 2rem;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.06);
 }
 
 #test-form-name {

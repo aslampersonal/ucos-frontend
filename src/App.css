@@ -1,0 +1,17 @@
+*,*::before,*::after {
+    font-family: ano-bold_regular,Helvetica,Arial,sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #fafafa;
+    font-family: ano-bold_regular,Helvetica,Arial,sans-serif;
+    scroll-behavior: smooth;
+}
+
+main {
+    background-color: #fafafa;
+    margin-top: 7rem;
+}

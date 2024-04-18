@@ -1,28 +1,13 @@
-*,*::before,*::after {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background-color: #fafafa;
-    font-family: 'Josefin Sans';
-    scroll-behavior: smooth;
-}
-
-main {
-    background-color: #fafafa;
-    margin-top: 7rem;
-}
-
 #header {
+    width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    background-color: #e5e5e5;
+    background: #E3E6F3;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
     color: rgb(0, 0, 0);
     position: fixed;
-    z-index: 1;
+    z-index: 9;
     top: 0;
     width: 100%;
     font-family: 'Josefin Sans';
@@ -37,7 +22,7 @@ main {
 #header-news {
     width: 100%;
     height: 2rem;
-    background-color: #b6d5ae;
+    background-color: #6d9962;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -46,7 +31,7 @@ main {
 
 .h-news-text {
     width: 100%;
-    color: #555;
+    color: white;
     font-size: 13px;
     text-align: center;
     padding: 0 6rem;
@@ -75,8 +60,7 @@ main {
     width: 100%;
     height: 5rem;
     display: flex;
-    flex-direction: raw;
-    flex-wrap: wrap;
+    flex-direction: row;
     padding: 0;
     justify-content: space-around;
 }
@@ -86,9 +70,69 @@ main {
     height: 5rem;
 }
 
+.search-form {
+    width: 15rem;
+    height: 2rem;
+    position: relative;
+    border-radius: 25px;
+    background: grey;
+}
+
+.search-input {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 25px;
+    padding: 8px 0px 8px 40px;
+    background: #f5f5f5;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+}
+
+.search-input:focus {
+    outline: none;
+}
+
+.search-btn {
+    position: absolute;
+    width: 40px;
+    margin-top: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.search-icon {
+    font-size: 22px;
+    color: #088178;
+}
+
+.search-form .result {
+    width: 100%;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+    border-radius: 10px;
+    margin-top: 1rem;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.search-form .result-list {
+    padding: 10px 20px;
+}
+
+.search-form .result-list:hover {
+    background-color: white;
+    cursor: pointer;
+}
+
 #h-nav-div-nav {
     padding: 0;
     margin: 0;
+    width: 50rem;
 }
 
 #h-nav-ul {
@@ -96,7 +140,7 @@ main {
     flex-direction: row;
     list-style: none;
     justify-content: space-around;
-    width: 25rem;
+    width: 90%;
     text-decoration: none;
     margin: 0;
     padding: 0;
@@ -104,69 +148,31 @@ main {
 
 .h-nav-li{
     color: black;
-}
-
-.drop-li {
-    float: left;
-    overflow: hidden;
-    color: black;
-}
-
-.drop-link {
-    font-size: 16px;
-    border: none;
-    outline: none;
-    padding: 14px 16px;
-    background-color: inherit;
-    font-family: inherit; /* Important for vertical align on mobile phones */
-    margin: 0; /* Important for vertical align on mobile phones */
-    text-decoration: none;
-    color: black;
-    font-weight: 600;
-    border: 0;
-    background: 0;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #e5e5e5;
-    min-width: 8rem;
-    /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
-    z-index: 1;
-    border-radius: 5px;
-    padding: 5px;
-}
-
-.dropdown-item {
-    float: none;
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-    background: 0;
-}
-
-.dropdown-item:hover {
-    background-color: red;
-    
-}
-
-.drop-li:hover .dropdown-content {
-    display: block;
+    position: relative;
 }
 
 .h-nav-a {
     text-decoration: none;
-    color: black;
+    color: #1a1a1a;
+    font-size: 13px;
     font-weight: 600;
-    border: 0;
-    background: 0;
+    text-transform: capitalize;
+    transition: 0.3s;
 }
 
-.h-nav-a:hover .drop-li:hover .drop-link {
-    color: rgb(5, 5, 205);
+.h-nav-a:hover {
+    cursor: pointer;
+    color: #088178;
+}
+
+.h-nav-a:hover::after {
+    content: "";
+    width: 80%;
+    height: 2px;
+    background: #088178;
+    position: absolute;
+    bottom: -4px;
+    left: 0px;
     cursor: pointer;
 }
 
@@ -184,12 +190,16 @@ main {
 
 #cart-icon {
     padding: 0;
-    margin-left: 1rem;
+}
 
+#login-icon:hover, #cart-icon:hover, #logout-icon:hover {
+    color: blue;
 }
 
 .top-icons {
     font-size: 25px;
+    color: #4b4b4b;
 }
+
 
 

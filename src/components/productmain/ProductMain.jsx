@@ -1,48 +1,88 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { MdKeyboardArrowLeft } from "react-icons/md"
 
-import "./ProductMain.css";
+import Cookies from 'js-cookie';
 
-function ProductMain (props) {
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { MdKeyboardArrowLeft } from "react-icons/md";
+import { VscDebugBreakpointLog } from "react-icons/vsc";
+import { AiOutlineSafety } from "react-icons/ai";
+import { GiReturnArrow } from "react-icons/gi";
+import { CiDeliveryTruck } from "react-icons/ci";
+import { IoWalletOutline } from "react-icons/io5";
+
+import { useCont } from "../../context/MyContext";
+
+import "./productmain.css";
+import Error from "../error/Error";
+
+export default function ProductMain (props) {
     
+    const { cart, setCart, user, getCart } = useCont();
+    const [products, setProducts] = useState([]);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [prodId, setProdId] = useState(location.state?.prodId);
+    const [selectedVariant, setSelectedVariant] = useState('400ml ₹240');
+
     useEffect(() => {
+        const newProdId = location.state?.prodId;
+        if (newProdId && newProdId !== prodId) {
+            setProdId(newProdId);
+        }
+        
+        if (!prodId) {
+            navigate("/error");
+            return;
+        }
+        const productData = localStorage.getItem("fullProducts");
+        if (productData) {
+            setProducts(JSON.parse(productData));
+        }
 
-        imageScroller();
-        showData();
-    
-    });
+        // imageScroller();
 
-    async function getData() {
-        var data = await axios.get('http://localhost:3000/get-product')
-        return data.data;
+    }, [prodId, location.state?.prodId]);
+
+    let productList = products[0];
+    if (prodId) {
+        productList = products.filter((prod) => prod._id == prodId);
     }
 
-    async function showData() {
-        const Data = await getData();
-        let mainimage = document.getElementById("prod-img"); 
-        let imgscrolldiv = document.getElementById("prod-scroll-carousel");
-        let title = document.getElementById("pd-title");
-        let description = document.getElementById("pd-desc");
-        let price = document.getElementById("pd-price");
+    const handleVariantSelect = (variant) => {
+        setSelectedVariant(variant);
+    };
 
-        for(let i=0; i<Data.length; i++) {
-            // for(let j=0; j<Data[i].Images.length; j++) {
-            //     const pdimg = document.createElement("img");
-            //     const imgurl = "../images/product-images/" + Data[i].Images[j];
-            //     pdimg.setAttribute("class","prod-scroll-img");
-            //     pdimg.setAttribute("src",imgurl);
-            //     imgscrolldiv.appendChild(pdimg);
-            // }
+    async function addToCart(id) {
 
-            // const mainImgurl = "../images/product-images/" + Data[0].Images[0];
-            // mainimage.setAttribute("src",mainImgurl);
-
-            title.innerText = Data[i].name;
-            description.innerText = Data[i].description;
-            price.innerText = Data[i].price;
-
+        const jwtToken = Cookies.get("jwtToken");
+        const quantity = document.getElementById("quantity").value;
+        if (jwtToken) {
+            for(let i=1; i<=quantity; i++) {
+                try {
+                    const response = await axios.post(`http://localhost:3000/api/users/products/cart/${productList[0]._id}`,
+                    {id: productList[0]._id},
+                    {
+                        headers: {
+                          'Content-Type': 'application/json',
+                          Authorization: `Bearer ${jwtToken}`,
+                        },
+                        withCredentials: true 
+                    });
+                    console.log(response.data.message);
+                    
+                } catch (error) {
+                    console.error('Error adding to cart:', error);
+                }
+            }            
+        } else {
+            for(let i=1; i<=quantity; i++) {
+                const cart = JSON.parse(localStorage.getItem("cart")) ? JSON.parse(localStorage.getItem("cart")) : [];
+                localStorage.setItem("cart", JSON.stringify([...cart, id]));
+            }
         }
+        getCart();
+        
     }
 
     function imageScroller() {
@@ -99,184 +139,155 @@ function ProductMain (props) {
         carousel.addEventListener("mouseup", dragStop);
         carousel.addEventListener("mouseleave", dragStop);
     }
-    
+
+    if (!(productList ? productList[0] : "sample")) {
+        return (
+            <Error />
+        );
+    }    
     
     return (
         <>
+            <section className="section-pagetop bg" id="first-sec">
+                <div className="container" id="head-sec-div">
+                    <nav>
+                        <ol className="breadcrumb text-white">
+                            <li className="breadcrumb-item"><NavLink to="/" className="link-dark link-underline-opacity-0">Home</NavLink></li>
+                            <li className="breadcrumb-item"><NavLink to="/store" className="link-dark link-underline-opacity-0">Store</NavLink></li>
+                            <li className="breadcrumb-item active" aria-current="page" id="category-link-nav">{productList ? productList[0].category : "sample"}</li>
+                        </ol>  
+                    </nav>
+                </div> 
+            </section>
+
             <section id="product-section">
-                {/* <div id="path-div">
-                        <span id="path-span">Home  FACE CARE PRODUCTS FOR MEN  Under Eye Cream | Quinoa & Collagen (15gm)</span>
-                    </div> */}
                 <div className="container" id="prod-sec-div">
                     <div id="prod-img-div">
-                    <div id="prod-img-main">
-                        <img id="prod-img" src="/src/assets/images/eyeshadow-girl1.jpg" alt="" />
-                    </div>
-                    <div id="prod-scroll-div">
-                        <div id="scroll-back" className="scroll-icon">
-                            <MdKeyboardArrowLeft />
+                        <div id="prod-img-main">
+                            <img id="prod-img" src={productList ? productList[0].image : "sample"} alt="" />
                         </div>
-                        <div id="prod-scroll-carousel">
-                        <img
-                            className="prod-scroll-img"
-                            src="/src/assets/images/product-images/under_eye_cream_1.jpg"
-                            alt=""
-                        />
-                        <img
-                            className="prod-scroll-img"
-                            src="/src/assets/images/product-images/under_eye_cream_2.jpg"
-                            alt=""
-                        />
-                        </div>
-                        <div id="scroll-next" className="scroll-icon">
-                        <svg
-                            width={10}
-                            height={16}
-                            viewBox="0 0 10 16"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M0.808088 15.1407C1.33618 15.6537 2.19868 15.6597 2.73452 15.1541L9.24109 9.01426C9.50086 8.76913 9.64712 8.4345 9.64712 8.08528C9.64712 7.73607 9.50086 7.40143 9.24109 7.15631L2.55378 0.845926C2.01794 0.340284 1.15545 0.346298 0.62735 0.859358C0.099255 1.37242 0.105536 2.19824 0.64138 2.70388L6.34422 8.08528L0.822118 13.2961C0.286274 13.8018 0.279993 14.6276 0.808088 15.1407Z"
-                            fill="black"
-                            />
-                        </svg>
-                        </div>
-                    </div>
+                        {/* <div id="prod-scroll-div">
+                            <div id="scroll-back" className="scroll-icon">
+                                <MdKeyboardArrowLeft />
+                            </div>
+                            <div id="prod-scroll-carousel">
+                                <img
+                                    className="prod-scroll-img"
+                                    src="/src/assets/images/product-images/under_eye_cream_1.jpg"
+                                    alt=""
+                                />
+                                <img
+                                    className="prod-scroll-img"
+                                    src="/src/assets/images/product-images/under_eye_cream_2.jpg"
+                                    alt=""
+                                />
+                            </div>
+                            <div id="scroll-next" className="scroll-icon">
+                                <svg
+                                    width={10}
+                                    height={16}
+                                    viewBox="0 0 10 16"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
+                                    d="M0.808088 15.1407C1.33618 15.6537 2.19868 15.6597 2.73452 15.1541L9.24109 9.01426C9.50086 8.76913 9.64712 8.4345 9.64712 8.08528C9.64712 7.73607 9.50086 7.40143 9.24109 7.15631L2.55378 0.845926C2.01794 0.340284 1.15545 0.346298 0.62735 0.859358C0.099255 1.37242 0.105536 2.19824 0.64138 2.70388L6.34422 8.08528L0.822118 13.2961C0.286274 13.8018 0.279993 14.6276 0.808088 15.1407Z"
+                                    fill="black"
+                                    />
+                                </svg>
+                            </div>
+                        </div> */}
                     </div>
                     <div id="prod-det-div">
-                    <form action="" id="product-form">
-                        <div id="product-form-div">
-                        <h1 id="pd-title" />
-                        <p id="pd-desc" />
-                        {/* <div id="prod-size-div">
-                                        <p style="font-size: 16px; font-weight: 600;">Options:</p>
-                                        <div id="pd-options">
-                                            <span>Eye Cream and Free Face Serum ₹249<input type="radio" name="size" value="Eye Cream and Free Face Serum ₹249" checked></span>
-                                            <span>15gm Under Eye Cream at ₹209<input type="radio" name="size" value="15gm Under Eye Cream at ₹209"></span>
-                                        </div>
+                        <form action="" id="product-form">
+                            <div id="product-form-div">
+                                <h1 id="pd-title">{productList ? productList[0].title : "sample"}</h1>
+                                <h5 id="pd-brand">{productList ? productList[0].brand : "sample"}</h5>
+                                <p id="pd-desc">{productList ? productList[0].description : "sample"}</p>
+                                <div id="price-qnt-div">
+                                    <div id="price-div">
+                                        <span id="pd-price" style={{ fontSize: 30, fontWeight: 600 }}>
+                                            ₹{productList ? productList[0].price : "sample"}
+                                        </span>
+                                        <span id="pd-price" style={{ fontSize: 18, fontWeight: 400, color: "#9d9d9d", textDecoration: "line-through", marginLeft: "10px" }}>
+                                            ₹{productList ? (productList[0].price+250) : "sample"}
+                                        </span>
+                                        <span id="pd-price" style={{ fontSize: 15, fontWeight: 400, color: "#298b39", marginLeft: "10px" }}>
+                                            Save ₹{(productList[0].price+250)-productList[0].price} ({Math.floor(100 - ((productList[0].price/(productList[0].price+250))*100))}% off)
+                                        </span>
+                                    </div>
+                                    <div id="qnt-div">
+                                        <span style={{ fontSize: 16, fontWeight: 600 }}>Quantity</span>
+                                        <input type="number" id="quantity" defaultValue="1" min="1" max={productList ? productList[0].countInStock : "sample"} />
+                                    </div>
+                                    {/* <div id="qnt-div">
+                                        <span style={{ fontSize: 16, fontWeight: 600 }}>Total Price</span>
+                                        <span style={{ fontSize: 30, fontWeight: 700 }}>₹{productList ? productList[0].price : "sample"}</span>
                                     </div> */}
-                        <div id="price-qnt-div">
-                            <div id="price-div">
-                            <span style={{ fontSize: 16, fontWeight: 600 }}>MRP</span>
-                            <span id="pd-price" style={{ fontSize: 30, fontWeight: 700 }}>
-                                ₹249
-                            </span>
-                            <span style={{ fontSize: 9, fontWeight: 400 }}>
-                                inclusive of all taxes
-                            </span>
-                            </div>
-                            <div id="qnt-div">
-                            <span style={{ fontSize: 16, fontWeight: 600 }}>Quantity</span>
-                            <div className="dropdown show">
-                                <button
-                                className="btn dropdown-toggle"
-                                href="#"
-                                role="button"
-                                id="dropdownMenuLink"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                >
-                                1
-                                </button>
-                                <div
-                                className="dropdown-menu"
-                                aria-labelledby="dropdownMenuLink"
-                                >
-                                <a className="dropdown-item" href="#">
-                                    2
-                                </a>
-                                <a className="dropdown-item" href="#">
-                                    3
-                                </a>
-                                <a className="dropdown-item" href="#">
-                                    4
-                                </a>
-                                <a className="dropdown-item" href="#">
-                                    5
-                                </a>
-                                <a className="dropdown-item" href="#">
-                                    6
-                                </a>
-                                <a className="dropdown-item" href="#">
-                                    7
-                                </a>
-                                <a className="dropdown-item" href="#">
-                                    8
-                                </a>
-                                <a className="dropdown-item" href="#">
-                                    9
-                                </a>
-                                <a className="dropdown-item" href="#">
-                                    10
-                                </a>
                                 </div>
+                                {/* <div id="variant-div">
+                                    <span style={{ fontSize: 16, fontWeight: 600, marginBottom: "10px" }}>Variants</span>
+                                    <ul id="variant-ul">
+                                    <li
+                                        className={`variant-li ${selectedVariant === '400ml ₹240' ? 'selected' : ''}`}
+                                        onClick={() => handleVariantSelect('400ml ₹240')}
+                                    >
+                                        400ml ₹240
+                                    </li>
+                                    <li
+                                        className={`variant-li ${selectedVariant === '200ml ₹190' ? 'selected' : ''}`}
+                                        onClick={() => handleVariantSelect('200ml ₹190')}
+                                    >
+                                        200ml ₹190
+                                    </li>
+                                    </ul>
+                                </div> */}
+                                <button onClick={() => {addToCart(productList ? productList[0]._id : "sample")}} type="button" className="btn" id="cart-btn">
+                                    ADD TO CART
+                                </button>
                             </div>
+                        </form>
+                        <div id="pros-div">
+                            <div className="pros-cat">
+                                <div className="pros-icons"><AiOutlineSafety className="pros-icons-i"/></div>
+                                <p className="pros-p">100% Genuine<br/>Products</p>
+                            </div>
+                            <div className="pros-cat">
+                                <div className="pros-icons"><GiReturnArrow className="pros-icons-i"/></div>
+                                <p className="pros-p">Return in 15<br/>Days</p>
+                            </div>
+                            <div className="pros-cat">
+                                <div className="pros-icons"><CiDeliveryTruck className="pros-icons-i"/></div>
+                                <p className="pros-p">Free Delivery<br/>above ₹999</p>
+                            </div>
+                            <div className="pros-cat">
+                                <div className="pros-icons"><IoWalletOutline className="pros-icons-i"/></div>
+                                <p className="pros-p">Free COD<br/>above ₹999</p>
                             </div>
                         </div>
-                        <button type="button" className="btn" id="cart-btn">
-                            ADD TO CART
-                        </button>
+                        <div id="p-features-div">
+                            <div className="p-features">
+                                <VscDebugBreakpointLog className="features-icons"/>
+                                <p className="p-features-p">Brightens</p>
+                            </div>
+                            <div className="p-features">
+                                <VscDebugBreakpointLog className="features-icons"/>
+                                <p className="p-features-p">Fights dark circles</p>
+                            </div>
+                            <div className="p-features">
+                                <VscDebugBreakpointLog className="features-icons"/>
+                                <p className="p-features-p">Depuffs</p>
+                            </div>
+                            <div className="p-features">
+                                <VscDebugBreakpointLog className="features-icons"/>
+                                <p className="p-features-p">Long Lasting</p>
+                            </div>
                         </div>
-                    </form>
-                    <div id="p-features-div">
-                        <div className="p-features">
-                        <svg
-                            width={20}
-                            height={19}
-                            viewBox="0 0 20 19"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <circle cx="9.5" cy="9.5" r="9.5" fill="#FFDFDF" />
-                            <path
-                            d="M2.20801 7.85277L3.54365 6.56097L7.74762 9.41986C7.74762 9.41986 12.5647 3.25737 17.4693 0.271434C18.3454 0.183654 18.805 0.27144 19.7246 0.271434C15.433 3.6809 8.8862 13.6341 7.76952 15.6882C5.95217 12.7658 2.20801 7.85277 2.20801 7.85277Z"
-                            fill="#C22323"
-                            />
-                        </svg>
-                        <p className="p-features-p">Brightens</p>
-                        </div>
-                        <div className="p-features">
-                        <svg
-                            width={20}
-                            height={19}
-                            viewBox="0 0 20 19"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <circle cx="9.5" cy="9.5" r="9.5" fill="#FFDFDF" />
-                            <path
-                            d="M2.20801 7.85277L3.54365 6.56097L7.74762 9.41986C7.74762 9.41986 12.5647 3.25737 17.4693 0.271434C18.3454 0.183654 18.805 0.27144 19.7246 0.271434C15.433 3.6809 8.8862 13.6341 7.76952 15.6882C5.95217 12.7658 2.20801 7.85277 2.20801 7.85277Z"
-                            fill="#C22323"
-                            />
-                        </svg>
-                        <p className="p-features-p">Fights dark circles</p>
-                        </div>
-                        <div className="p-features">
-                        <svg
-                            width={20}
-                            height={19}
-                            viewBox="0 0 20 19"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <circle cx="9.5" cy="9.5" r="9.5" fill="#FFDFDF" />
-                            <path
-                            d="M2.20801 7.85277L3.54365 6.56097L7.74762 9.41986C7.74762 9.41986 12.5647 3.25737 17.4693 0.271434C18.3454 0.183654 18.805 0.27144 19.7246 0.271434C15.433 3.6809 8.8862 13.6341 7.76952 15.6882C5.95217 12.7658 2.20801 7.85277 2.20801 7.85277Z"
-                            fill="#C22323"
-                            />
-                        </svg>
-                        <p className="p-features-p">Depuffs</p>
-                        </div>
-                    </div>
                     </div>
                 </div>
                 </section>
         </>
     );
 }
-
-export default ProductMain;
