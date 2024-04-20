@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "/ecos-frontend", "use": "@vercel/static-build" },
+    { "src": "/ecos-backend", "use": "@vercel/node" }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/ecos-backend/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/ecos-frontend/$1"
+    }
+  ]
+}
+  

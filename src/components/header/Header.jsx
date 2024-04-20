@@ -55,8 +55,6 @@ function Header() {
 
     async function logoutUser() {
 
-        const jwtToken = Cookies.get("jwtToken");
-        const decodedToken = jwt_decode(jwtToken);
         try {
             const response = await axios.post('http://localhost:3000/api/users/logout',
             {username: user.username},
@@ -182,6 +180,7 @@ function Header() {
                             <NavLink to="./profile">
                                 <button className="btn" id="user-icon" >
                                     <FaUser className='top-icons' />
+                                    <span>{user?user.username.slice(0,7):""}</span>
                                 </button>
                             </NavLink>
                             <NavLink to="./cart">
