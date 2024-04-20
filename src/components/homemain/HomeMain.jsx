@@ -9,6 +9,7 @@ import Cookies from 'js-cookie';
 function HomeMain () {
     
     const prodData = JSON.parse(localStorage.getItem("fullProducts"));
+    console.log(prodData);
 
     useEffect(() => {
         var counter = 1;
